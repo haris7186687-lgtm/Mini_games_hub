@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Games Hub</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#101426;
+  color:white;
+  text-align:center;
+}
+header{
+  padding:25px 12px;
+  background:#20294a;
+}
+h1{color:#66f2ff;margin:5px}
+header p{color:#ddd}
+.container{padding:20px}
+.card{
+  background:#20294a;
+  padding:22px;
+  border-radius:18px;
+  max-width:420px;
+  margin:20px auto;
+  box-shadow:0 5px 20px #0005;
+}
+button{
+  border:0;
+  padding:13px 22px;
+  margin:8px;
+  border-radius:12px;
+  background:#66f2ff;
+  color:#101426;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+#bubble{
+  font-size:75px;
+  display:block;
+  margin:15px auto;
+  cursor:pointer;
+  background:none;
+}
+#score{color:#66f2ff;font-size:28px}
+footer{padding:25px;color:#aaa}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎮 Mini Games Hub</h1>
+  <p>Play Mini Games. Have Fun!</p>
+</header>
+
+<div class="container">
+
+  <h2>🔥 Welcome to Mini Games Hub</h2>
+  <p>Choose a game and challenge yourself!</p>
+
+  <div class="card">
+    <h2>🫧 Bubble Pop</h2>
+    <p>Tap the bubble and score points!</p>
+
+    <p>Score: <span id="score">0</span></p>
+
+    <button id="bubble" onclick="popBubble()">🫧</button>
+
+    <p id="message">Ready to play?</p>
+
+    <button onclick="startGame()">Start Game</button>
+    <button onclick="resetGame()">Reset</button>
+  </div>
+
+  <div class="card">
+    <h2>🧠 Quick Math</h2>
+    <p id="question">What is 5 + 3?</p>
+    <input id="answer" type="number"
+      placeholder="Your answer"
+      style="padding:12px;width:130px;border-radius:8px">
+    <br>
+    <button onclick="checkAnswer()">Check Answer</button>
+    <p id="result"></p>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 Mini Games Hub | Made for Fun 🎮
+</footer>
+
+<script>
+let score=0;
+let playing=false;
+let timeLeft=20;
+let timer;
+let a=5,b=3;
+
+function startGame(){
+  clearInterval(timer);
+  score=0;
+  timeLeft=20;
+  playing=true;
+  document.getElementById('score').textContent=score;
+  document.getElementById('message').textContent=
+    'Time left: '+timeLeft+' seconds';
+  timer=setInterval(()=>{
+    timeLeft--;
+    if(timeLeft<=0){
+      clearInterval(timer);
+      playing=false;
+      document.getElementById('message').textContent=
+        'Game over! Final score: '+score;
+    }else{
+      document.getElementById('message').textContent=
+        'Time left: '+timeLeft+' seconds';
+    }
+  },1000);
+}
+
+function popBubble(){
+  if(!playing){
+    document.getElementById('message').textContent=
+      'Press Start Game first!';
+    return;
+  }
+  score++;
+  document.getElementById('score').textContent=score;
+  const bubbles=['🫧','🔵','🟣','💎','⭐'];
+  document.getElementById('bubble').textContent=
+    bubbles[Math.floor(Math.random()*bubbles.length)];
+}
+
+function resetGame(){
+  clearInterval(timer);
+  playing=false;
+  score=0;
+  document.getElementById('score').textContent=0;
+  document.getElementById('message').textContent='Ready to play?';
+  document.getElementById('bubble').textContent='🫧';
+}
+
+function checkAnswer(){
+  const answer=document.getElementById('answer').value;
+  if(answer===''){
+    document.getElementById('result').textContent=
+      'Enter your answer first!';
+    return;
+  }
+  if(Number(answer)===a+b){
+    document.getElementById('result').textContent='Correct! 🎉';
+    a=Math.floor(Math.random()*10)+1;
+    b=Math.floor(Math.random()*10)+1;
+    document.getElementById('question').textContent=
+      'What is '+a+' + '+b+'?';
+    document.getElementById('answer').value='';
+  }else{
+    document.getElementById('result').textContent='Try again! 😊';
+  }
+}
+</script>
+
+</body>
+</html>
